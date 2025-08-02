@@ -141,7 +141,7 @@ npm install
 cp .env.example .env
 
 # 5. Run the server
-npm run dev ```
+npm run dev 
 
 ```
 
