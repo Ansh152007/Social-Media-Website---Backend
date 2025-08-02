@@ -145,7 +145,5 @@ npm run dev
 
 ```
 
-📃 License
-Licensed under the MIT License.
 
 
