@@ -100,11 +100,11 @@ Create a `.env` file like this:
 
 
 # Server Configuration
-
+```
 PORT=5000
 NODE_ENV=development
 CLIENT_URL=http://localhost:3000
-
+```
 
 # Database Configuration
 
@@ -117,11 +117,11 @@ JWT_SECRET=your_jwt_secret_here
 
 
 # Cloudinary Configuration
-
+```
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
-
+```
 
 ---
 
