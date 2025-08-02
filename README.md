@@ -16,47 +16,39 @@ A full-stack social media sharing platform backend built with **Node.js**, **Exp
 - 🧱 Modular File Structure with MVC Design
 
 ---
-
-## 📁 Project Structure
-
-social-media-backend/
-│
-├── controllers/ # Business logic (user, healthcheck)
-│ ├── healthcheck.controller.js
-│ └── user.controller.js
-│
-├── database/ # DB connection
-│ └── connectDB.js
-│
-├── middleware/ # Middleware utilities
-│ ├── asyncanderrorhandler.middleware.js
-│ └── auth.middleware.js
-│
-├── models/ # Mongoose schemas
-│ ├── board.model.js
-│ ├── pins.model.js
-│ └── user.model.js
-│
-├── routes/ # All route files
-│ └── health.check.route.js
-│
-├── utilities/ # Utility logic
-│ ├── cloudinary.js
-│ ├── genToken.js
-│ └── multer.js
-│
-├── public/ # Static assets (if needed)
-│
-├── views/ # EJS templates (for SSR)
-│
-├── .env # Environment variables
-├── .env.example # Sample env
-├── app.js # Express app setup
-├── app.route.js # All route imports
-├── server.js # Starts the backend server
+```
+📦 SOCIAL MEDIA WEBSITE - BACKEND
+├── 📁 controllers
+│   ├── healthcheck.controller.js
+│   └── user.controller.js
+├── 📁 database
+│   └── connectDB.js
+├── 📁 middleware
+│   ├── asyncanderrorhandler.middleware.js
+│   └── auth.middleware.js
+├── 📁 models
+│   ├── board.model.js
+│   ├── pins.model.js
+│   └── user.model.js
+├── 📁 routes
+│   └── health.check.route.js
+├── 📁 utilities
+│   ├── cloudinary.js
+│   ├── genToken.js
+│   └── multer.js
+├── 📁 views
+├── 📁 public
+├── 📁 node_modules
+├── .env
+├── .env.example
+├── .gitattributes
+├── .gitignore
+├── app.js
+├── app.route.js
+├── server.js
 ├── package.json
-└── package-lock.json
-
+├── package-lock.json
+```
 
 ---
 
@@ -149,7 +141,7 @@ npm install
 cp .env.example .env
 
 # 5. Run the server
-npm run dev
+npm run dev ```
 
 ---
 
