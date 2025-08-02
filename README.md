@@ -98,26 +98,26 @@ A full-stack social media sharing platform backend built with **Node.js**, **Exp
 
 Create a `.env` file like this:
 
-# ================================
+
 # Server Configuration
-# ================================
+
 PORT=5000
 NODE_ENV=development
 CLIENT_URL=http://localhost:3000
 
-# ================================
-# Database Configuration
-# ================================
-DB_URL=mongodb+srv://<username>:<password>@cluster.mongodb.net/social-app?retryWrites=true&w=majority
 
-# ================================
+# Database Configuration
+
+DB_URL=
+
+
 # JWT Secret (for token signing)
-# ================================
+
 JWT_SECRET=your_jwt_secret_here
 
-# ================================
+
 # Cloudinary Configuration
-# ================================
+
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
@@ -143,7 +143,7 @@ cp .env.example .env
 # 5. Run the server
 npm run dev ```
 
----
+```
 
 📃 License
 Licensed under the MIT License.
