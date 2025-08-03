@@ -10,7 +10,7 @@ export const createBoard = asyncHandler(async (req, res) => {
   }
 
   const board = await Board.create({
-    owner: req.user._id,
+    owner: req.id,
     title,
     description,
     isPublic,
@@ -24,7 +24,7 @@ export const createBoard = asyncHandler(async (req, res) => {
 
 // Get all boards for a user
 export const getUserBoards = asyncHandler(async (req, res) => {
-  const boards = await Board.find({ owner: req.user._id })
+  const boards = await Board.find({ owner: req.id })
     .populate("pins", "title description image")
     .sort({ createdAt: -1 });
 
@@ -76,7 +76,7 @@ export const getBoardById = asyncHandler(async (req, res) => {
   }
 
   // Check if board is public or if user is the owner
-  if (!board.isPublic && (!req.user || board.owner._id.toString() !== req.user._id.toString())) {
+  if (!board.isPublic && (!req.id || board.owner._id.toString() !== req.id.toString())) {
     throw new ApiError("Access denied", 403);
   }
 
@@ -98,7 +98,7 @@ export const updateBoard = asyncHandler(async (req, res) => {
   }
 
   // Check if user is the owner
-  if (board.owner.toString() !== req.user._id.toString()) {
+  if (board.owner.toString() !== req.id.toString()) {
     throw new ApiError("You are not authorized to update this board", 403);
   }
 
@@ -126,7 +126,7 @@ export const deleteBoard = asyncHandler(async (req, res) => {
   }
 
   // Check if user is the owner
-  if (board.owner.toString() !== req.user._id.toString()) {
+  if (board.owner.toString() !== req.id.toString()) {
     throw new ApiError("You are not authorized to delete this board", 403);
   }
 
@@ -154,7 +154,7 @@ export const addPinToBoard = asyncHandler(async (req, res) => {
   }
 
   // Check if user is the owner
-  if (board.owner.toString() !== req.user._id.toString()) {
+  if (board.owner.toString() !== req.id.toString()) {
     throw new ApiError("You are not authorized to modify this board", 403);
   }
 
@@ -190,7 +190,7 @@ export const removePinFromBoard = asyncHandler(async (req, res) => {
   }
 
   // Check if user is the owner
-  if (board.owner.toString() !== req.user._id.toString()) {
+  if (board.owner.toString() !== req.id.toString()) {
     throw new ApiError("You are not authorized to modify this board", 403);
   }
 

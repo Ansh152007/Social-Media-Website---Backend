@@ -1,6 +1,6 @@
 import express from "express";
-import { createPin, deletePin, getAllPins } from "../controllers/pin.controller";
-import { isAuthenticated } from "../middleware/auth.middleware";
+import { createPin, deletePin, getAllPins } from "../controllers/pin.controller.js";
+import { isAuthenticated } from "../middleware/auth.middleware.js";
 const router = express.Router();
 
 // Route to create a pin

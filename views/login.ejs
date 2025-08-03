@@ -1,0 +1,128 @@
+<div class="auth-container">
+    <div class="container">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-md-6 col-lg-5">
+                <div class="auth-card">
+                    <div class="auth-header text-center mb-4">
+                        <div class="auth-logo mb-3">
+                            <i class="fas fa-camera-retro"></i>
+                        </div>
+                        <h2 class="auth-title">Welcome Back</h2>
+                        <p class="auth-subtitle">Sign in to your account</p>
+                    </div>
+                    
+                    <form id="loginForm" action="/api/user/login" method="POST" class="auth-form">
+                        <div class="form-floating mb-3">
+                            <input 
+                                type="email" 
+                                class="form-control" 
+                                id="email" 
+                                name="email" 
+                                required 
+                                placeholder="Enter your email"
+                            >
+                            <label for="email">
+                                <i class="fas fa-envelope me-2"></i>Email Address
+                            </label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input 
+                                type="password" 
+                                class="form-control" 
+                                id="password" 
+                                name="password" 
+                                required 
+                                placeholder="Enter your password"
+                            >
+                            <label for="password">
+                                <i class="fas fa-lock me-2"></i>Password
+                            </label>
+                        </div>
+
+                        <div class="form-check mb-4">
+                            <input type="checkbox" class="form-check-input" id="remember">
+                            <label class="form-check-label" for="remember">
+                                Remember me
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 mb-3">
+                            <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                        </button>
+                    </form>
+
+                    
+                    <div class="auth-footer text-center">
+                        <p class="mb-2">Don't have an account? 
+                            <a href="/register" class="auth-link">Create one</a>
+                        </p>
+                        <a href="/forgot-password" class="auth-link-small">Forgot Password?</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    
+    // Show loading state
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Signing in...';
+    submitBtn.disabled = true;
+    
+    try {
+        const response = await fetch('/api/user/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: formData.get('email'),
+                password: formData.get('password')
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            // Success - redirect to dashboard
+            window.location.href = '/dashboard';
+        } else {
+            // Show error message
+            showAlert(data.message || 'Login failed', 'danger');
+        }
+    } catch (error) {
+        showAlert('Network error. Please try again.', 'danger');
+    } finally {
+        // Reset button
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+});
+
+function showAlert(message, type) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    alertDiv.style.cssText = 'top: 80px; right: 20px; z-index: 1050; min-width: 300px;';
+    alertDiv.innerHTML = `
+        <i class="fas fa-${type === 'danger' ? 'exclamation-circle' : 'check-circle'} me-2"></i>${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(alertDiv);
+    
+    // Auto dismiss after 5 seconds
+    setTimeout(() => {
+        if (alertDiv.parentNode) {
+            alertDiv.remove();
+        }
+    }, 5000);
+}
+</script>

@@ -9,7 +9,7 @@ import {
   addPinToBoard,
   removePinFromBoard
 } from "../controllers/board.controller.js";
-import { authenticate } from "../middleware/auth.middleware.js";
+import { isAuthenticated } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
@@ -18,7 +18,7 @@ router.get("/explore", exploreBoards);
 router.get("/:boardId", getBoardById);
 
 // Protected routes
-router.use(authenticate); // All routes below require authentication
+router.use(isAuthenticated); // All routes below require authentication
 
 router.post("/", createBoard);
 router.get("/user/boards", getUserBoards);

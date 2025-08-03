@@ -1,4 +1,4 @@
-import Pin from '../models/pin.model.js';
+import Pin from '../models/pins.model.js';
 import { asyncHandler, ApiError } from '../middleware/asyncanderrorhandler.middleware.js';
 import { uploadImage, deleteImage } from '../utilities/cloudinary.js';
 
@@ -25,7 +25,7 @@ export const createPin = asyncHandler(async (req, res) => {
       description,
       category,
       image: image.secure_url,
-      author: req.user._id, // Set the author to the current user
+      author: req.id, // Set the author to the current user
     });
     res.status(201).json({
       success: true,
@@ -44,7 +44,7 @@ export const deletePin = asyncHandler(async (req, res) => {
     throw new ApiError("Pin not found", 404);
   }
 
-  if (pin.author.toString() !== req.user._id.toString()) {
+  if (pin.author.toString() !== req.id.toString()) {
     throw new ApiError("You are not authorized to delete this pin", 403);
   }
 
