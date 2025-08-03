@@ -4,9 +4,12 @@ import { uploadImage, deleteImage } from '../utilities/cloudinary.js';
 
 // create pin
 export const createPin = asyncHandler(async (req, res) => {
-  const { title, description } = req.body;
+  const { title, description, category } = req.body;
     if (!title || !description) {
     throw new ApiError("Title and description are required", 400);
+  }
+  if (!category) {
+    throw new ApiError("Category is required", 400);
   }
   if (req.file) {
     const image = await uploadImage(req.file);
@@ -20,7 +23,9 @@ export const createPin = asyncHandler(async (req, res) => {
     const pin = await Pin.create({
       title,
       description,
+      category,
       image: image.secure_url,
+      author: req.user._id, // Set the author to the current user
     });
     res.status(201).json({
       success: true,
@@ -36,11 +41,11 @@ export const deletePin = asyncHandler(async (req, res) => {
   const pin = await Pin.findById(pinId);
 
   if (!pin) {
-    throw new ApiError(404, "Pin not found");
+    throw new ApiError("Pin not found", 404);
   }
 
-  if (pin.owner.toString() !== req.user._id.toString()) {
-    throw new ApiError(403, "You are not authorized to delete this pin");
+  if (pin.author.toString() !== req.user._id.toString()) {
+    throw new ApiError("You are not authorized to delete this pin", 403);
   }
 
   await pin.deleteOne(); 
@@ -63,11 +68,8 @@ export const getAllPins = asyncHandler(async (req, res) => {
   .sort({ createdAt: -1 }) // Sort by creation date, newest first
   .limit(100) // Limit to 100 pins for performance
   .populate({
-    path: 'owner',
-    select: 'name avatar',
-  }).populate({
-    path: 'image',
-    select: 'url',
+    path: 'author',
+    select: 'name username profilePicture',
   });
   res.status(200).json({
     success: true,

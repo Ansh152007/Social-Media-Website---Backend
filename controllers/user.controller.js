@@ -1,4 +1,4 @@
-import { User } from "../models/user.model.js";
+import User from "../models/user.model.js";
 import genToken from "../utilities/genToken.js";
 import {
   asyncHandler,
@@ -15,19 +15,21 @@ export const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError("User already exists", 400);
   }
 
-  if (req.file) {
-    const avatarResult = await uploadImage(req.file.path);
-    if (avatarResult) {
-      user.avatar = avatarResult.secure_url;
-    }
-  }
-
   // Create new user
-  const user = await User.create({
+  const userData = {
     name,
     email: email.toLowerCase(),
     password,
-  });
+  };
+
+  if (req.file) {
+    const avatarResult = await uploadImage(req.file.path);
+    if (avatarResult) {
+      userData.avatar = avatarResult.secure_url;
+    }
+  }
+
+  const user = await User.create(userData);
 
   if (!user) {
     throw new ApiError("User registration failed", 500);
@@ -47,7 +49,7 @@ export const loginUser = asyncHandler(async (req, res) => {
   );
 
   // If user does not exist or password is incorrect
-  if (!user || !(await user.matchPassword(password))) {
+  if (!user || !(await user.comparePassword(password))) {
     throw new ApiError("Invalid email or password", 401);
   }
   // Generate token
@@ -57,7 +59,7 @@ export const loginUser = asyncHandler(async (req, res) => {
 // User logout handler
 export const logoutUser = asyncHandler(async (_, res) => {
   res.cookie("token", "", { maxAge: 0 });
-  res.staus(200).json({
+  res.status(200).json({
     success: true,
     message: "User logged out successfully",
   });
@@ -65,7 +67,7 @@ export const logoutUser = asyncHandler(async (_, res) => {
 
 // Get current user profile
 export const currentUser = asyncHandler(async (req, res) => {
-  const user = User.findById(req.id)
+  const user = await User.findById(req.id)
     .populate({
       path: "createdPins",
       select: "title description image",
