@@ -1,6 +1,6 @@
 import { asyncHandler, ApiError } from "./asyncanderrorhandler.middleware.js";
 import jwt from "jsonwebtoken";
-import { User } from "../models/user.model.js";
+
 export const isAuthenticated = asyncHandler(async (req, res, next) => {
   const token = req.cookies.token;
 

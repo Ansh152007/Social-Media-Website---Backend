@@ -2,7 +2,7 @@
   "name": "social-media-website---backend",
   "version": "1.0.0",
   "description": "A basic social media backend with capabilities to upload images, videos, avatar and more.",
-  "license": "ISC",
+  "license": "MIT",
   "author": "Ansh Tiwari",
   "type": "module",
   "main": "server.js",
