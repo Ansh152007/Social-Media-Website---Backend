@@ -29,6 +29,7 @@ export const createPin = asyncHandler(async (req, res) => {
   }
 });
 
+// delete pin
 export const deletePin = asyncHandler(async (req, res) => {
   const { pinId } = req.params;
 
@@ -44,6 +45,11 @@ export const deletePin = asyncHandler(async (req, res) => {
 
   await pin.deleteOne(); 
 
+  if (pin.image) {
+    const imageUrl = pin.image;
+    const publicId = imageUrl.split('/').pop().split('.')[0]; // Extract public ID from URL
+    await deleteImage(publicId); // Delete image from Cloudinary
+  }
 
   res.status(200).json({
     success: true,
